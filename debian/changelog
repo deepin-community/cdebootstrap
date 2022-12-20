@@ -1,0 +1,649 @@
+cdebootstrap (0.7.8-deepin1) unstable; urgency=medium
+
+  * update version
+
+ -- Deepin Packages Builder <packages@deepin.org>  Tue, 22 Nov 2022 13:30:13 +0800
+
+cdebootstrap (0.7.8) unstable; urgency=medium
+
+  * Test current Debian releases. (closes: #983511)
+
+ -- Bastian Blank <waldi@debian.org>  Fri, 26 Feb 2021 17:04:02 +0100
+
+cdebootstrap (0.7.7) unstable; urgency=medium
+
+  [ Steven Chamberlain ]
+  * Implement SHA256 verification of .deb files.  (closes: #856212)
+  * Implement SHA256 verification of Packages files.
+    - Drop fall-back to MD5.  (closes: #856215)
+  * Check full length of SHA256 digest.  (closes: #856213)
+
+  [ Bastian Blank ]
+  * Build-depend against correct version of libdebian-installer4-dev.
+
+ -- Bastian Blank <waldi@debian.org>  Sun, 05 Mar 2017 13:09:27 +0100
+
+cdebootstrap (0.7.6) unstable; urgency=medium
+
+  * Make generation of tar reproducible. (closes: #777737)
+  * Allow removal of essential packages by apt.  This works only with
+    apt >= 1.1.
+  * Drop simulation based foreign arch aupport.
+  * Add new qemu based foreign arch support.
+
+ -- Bastian Blank <waldi@debian.org>  Tue, 08 Nov 2016 19:31:14 +0100
+
+cdebootstrap (0.7.5) unstable; urgency=medium
+
+  * Use deb.debian.org instead of httpredir.debian.org.
+  * Change mirror after redirect if using libcurl.
+  * Use libcurl for any mirror type.
+  * Use curl instead of wget if libcurl is not available.
+
+ -- Bastian Blank <waldi@debian.org>  Fri, 19 Aug 2016 14:18:30 +0200
+
+cdebootstrap (0.7.4) unstable; urgency=medium
+
+  * Use --force-depends instead of --force-all. (closes: #824394)
+
+ -- Bastian Blank <waldi@debian.org>  Mon, 16 May 2016 17:52:12 +0200
+
+cdebootstrap (0.7.3) unstable; urgency=medium
+
+  * Allow suite configs outside of config dir.
+  * Don't explicitly install library packages.
+  * Properly clean apt cache.
+  * Don't compress tar.
+  * Use dh.
+  * Support Packages.xz.
+  * Don't write output to stderr.
+  * Add package tests.
+
+ -- Bastian Blank <waldi@debian.org>  Thu, 17 Mar 2016 20:36:59 +0100
+
+cdebootstrap (0.7.2) unstable; urgency=medium
+
+  * Add Kali as known origin. (closes: #816554)
+  * Remove unused support for package-name install.
+  * Reformat arguments for apt-get.
+  * Generate command lines more dynamic.
+  * Make simulation better match reality.
+
+ -- Bastian Blank <waldi@debian.org>  Thu, 17 Mar 2016 10:10:30 +0100
+
+cdebootstrap (0.7.1) unstable; urgency=medium
+
+  * Build-depend on pkg-config.
+
+ -- Bastian Blank <waldi@debian.org>  Sat, 24 Oct 2015 16:48:51 +0200
+
+cdebootstrap (0.7.0) unstable; urgency=medium
+
+  * Split essential and other packages:
+    - Only download and install essential packages by hand.
+    - Make apt download needed packages.
+    - Only try to install edge packages.
+  * Use libcurl instead of wget for non-static builds.
+  * Set source format to "3.0 (native)".
+  * Update Standards-Version to 3.9.6, no changes.
+
+ -- Bastian Blank <waldi@debian.org>  Sun, 27 Sep 2015 11:33:05 +0200
+
+cdebootstrap (0.6.5) unstable; urgency=medium
+
+  * Re-organize architecture detection, remove unset version.
+  * Reduce use of global variables.
+  * Redo config suite reading:
+    - Make it possible to specify origin and get default mirror and keyring
+      accordingly from the config.
+    - Always read config depending on information from Release file.
+    - Add fallback to generic. (closes: #783672)
+    - Empty default suite selection. (closes: #647181)
+  * Remove ubuntu-specific config suite.
+  * Support large deb packages, again. (closes: #756419)
+
+ -- Bastian Blank <waldi@debian.org>  Sat, 05 Sep 2015 17:14:48 +0200
+
+cdebootstrap (0.6.4) unstable; urgency=medium
+
+  * Build helper debs with gzip compression to support releases before
+    Squeeze. (closes: #768540)
+  * Add proper Built-Using to binary packages. (closes: #769352)
+
+ -- Bastian Blank <waldi@debian.org>  Sat, 15 Nov 2014 20:31:27 +0100
+
+cdebootstrap (0.6.3) unstable; urgency=medium
+
+  * Make all mounts private, so that we don't leak mounts.
+    (closes: #755965)
+  * Support uncompressed deb packages. (closes: #756420)
+  * Supprt large deb packages. (closes: #756419)
+
+ -- Bastian Blank <waldi@debian.org>  Thu, 31 Jul 2014 20:49:14 +0200
+
+cdebootstrap (0.6.2) unstable; urgency=medium
+
+  * Use unshare to get our own mount namespace.
+  * Overhaul foreign mode:
+    - Work with dash as /bin/sh.
+    - Check for pid 1 before executing stuff, otherwise exit.
+    - Make sure a status fd exists.
+    - Set owner and group of all files to root.
+    - Handle signals.
+  * Overhaul execution code:
+    - Support output.
+    - Use for decompressing.
+
+ -- Bastian Blank <waldi@debian.org>  Tue, 22 Jul 2014 21:16:47 +0200
+
+cdebootstrap (0.6.1) unstable; urgency=medium
+
+  * Fix stack overrun in execution. (closes: #753118)
+  * Don't expect root for foreign and download only runs.
+
+ -- Bastian Blank <waldi@debian.org>  Mon, 07 Jul 2014 22:41:40 +0200
+
+cdebootstrap (0.6.0) unstable; urgency=medium
+
+  * Use debhelper compat level 9.
+  * Force installation of base-passed. (closes: #737939)
+  * Use dpkg status fd instead of output parsing.
+  * Support Debian Jessie. (closes: #710437)
+  * Don't create /dev/console.
+  * Don't check for noexec and nodev for foreign and download only runs.
+    (closes: #752013)
+  * Drop udeb for the time being. (closes: #723167)
+  * Use dpkg buildflags support.
+  * Update Standards-Version to 3.9.5:
+    - Support build-arch and build-indep.
+  * Always show stderr of called commands. (closes: #746452)
+  * Remove prefix from command output. (closes: #332551)
+
+ -- Bastian Blank <waldi@debian.org>  Mon, 23 Jun 2014 22:53:48 +0200
+
+cdebootstrap (0.5.10) unstable; urgency=low
+
+  * Disable InRelease support. (closes: #704613)
+
+ -- Bastian Blank <waldi@debian.org>  Mon, 15 Apr 2013 16:23:16 +0200
+
+cdebootstrap (0.5.9) unstable; urgency=low
+
+  * Add support for InRelease files. (closes: #673625)
+  * Don't try to find language files during bootstrap. (closes: #671177)
+
+ -- Bastian Blank <waldi@debian.org>  Fri, 01 Jun 2012 20:40:30 +0200
+
+cdebootstrap (0.5.8) unstable; urgency=low
+
+  * Support SHA1 checksums for release files. (closes: #614314)
+  * Use zlib to decompress gzip files.
+  * Support bzip2 compressed packages. (closes: #458688)
+  * Fix removal of divertion in second stage code.
+  * Document default flavour. (closes: #528376)
+  * Fix -k option. (closes: #508090)
+  * Fix typo in error message. (closes: #502443)
+  * Support xz compressed packages.
+  * Update description.
+
+ -- Bastian Blank <waldi@debian.org>  Tue, 26 Jul 2011 22:29:09 +0200
+
+cdebootstrap (0.5.7) unstable; urgency=low
+
+  * Support Debian Wheezy. (closes: #597460)
+  * Support newer Ubuntu releases.
+  * Remove old Ubuntu releases.
+
+ -- Bastian Blank <waldi@debian.org>  Sun, 10 Oct 2010 13:50:51 +0000
+
+cdebootstrap (0.5.6) unstable; urgency=low
+
+  * Don't use noreturn attribute, it is broken somehow. (closes: #587526)
+  * Use debhelper compat level 7.
+
+ -- Bastian Blank <waldi@debian.org>  Mon, 12 Jul 2010 11:45:01 +0200
+
+cdebootstrap (0.5.5) unstable; urgency=low
+
+  * Ignore SIGPIPE. (closes: #524538)
+
+ -- Bastian Blank <waldi@debian.org>  Wed, 13 May 2009 16:26:03 +0000
+
+cdebootstrap (0.5.4) unstable; urgency=low
+
+  * Add Debian Squeeze to list of known dists. (closes: #513490)
+
+ -- Bastian Blank <waldi@debian.org>  Fri, 30 Jan 2009 13:07:17 +0100
+
+cdebootstrap (0.5.3) unstable; urgency=low
+
+  * Fix type in foreign mode. (closes: #486898)
+  * Add Ubuntu intrepid to known dists. (closes: 486896)
+  * Update documentation. (closes: #488500)
+
+ -- Bastian Blank <waldi@debian.org>  Sun, 20 Jul 2008 09:23:00 +0200
+
+cdebootstrap (0.5.2) unstable; urgency=low
+
+  * Drop explicit installation of base-passwd.
+  * Workaround broken message end check in apt. (closes: #478474)
+  * Support ssh, based on patch by Jörg Sommer. (closes: #434875)
+
+ -- Bastian Blank <waldi@debian.org>  Fri, 09 May 2008 21:42:26 +0200
+
+cdebootstrap (0.5.1) unstable; urgency=low
+
+  * Fix some devices.
+  * Drop sarge support.
+  * Fix environment and proc mount in foreign mount.
+
+ -- Bastian Blank <waldi@debian.org>  Sun, 23 Mar 2008 22:48:15 +0100
+
+cdebootstrap (0.5.0) unstable; urgency=low
+
+  * Remove regular /dev/null which may be there if device creation failed.
+  * Remove pipe /dev/initctl.
+  * Always try to leave out makedev.
+  * Remove special sarge config.
+  * Remove old helpers.
+  * Update copyright file.
+
+ -- Bastian Blank <waldi@debian.org>  Fri, 21 Mar 2008 17:35:04 +0100
+
+cdebootstrap (0.4.9) unstable; urgency=low
+
+  * Redo execution code. Return real errors.
+  * Consume complete output from gpgv.
+  * Reorganize gpg checks.
+  * Accept stable/testing/unstable again. (closes: #443885)
+
+ -- Bastian Blank <waldi@debian.org>  Wed, 27 Feb 2008 16:20:20 +0100
+
+cdebootstrap (0.4.8) unstable; urgency=low
+
+  * Cleanup code.
+  * Provide better message for execution failures.
+
+ -- Bastian Blank <waldi@debian.org>  Mon, 25 Feb 2008 12:12:04 +0100
+
+cdebootstrap (0.4.7) unstable; urgency=low
+
+  * Add support for second stage installer.
+  * Never use full makedev anymore.
+  * policy-rc.d handler emits a message. (closes: #429069)
+  * Update several warning and error messages.
+
+ -- Bastian Blank <waldi@debian.org>  Sun, 24 Feb 2008 16:31:39 +0100
+
+cdebootstrap (0.4.6) unstable; urgency=low
+
+  * Redo mirror parsing. (closes: #325487)
+  * Allocate command buffer dynamic. (closes: #435254)
+
+ -- Bastian Blank <waldi@debian.org>  Sun, 24 Feb 2008 09:45:29 +0000
+
+cdebootstrap (0.4.5) unstable; urgency=low
+
+  * Fix name of rc.d helper.
+  * Check noexec and nodev flags on the target. (closes: #328077)
+  * Add Ubuntu hardy to known dists.
+  * Fix NEWS file. (closes: #437706)
+  * Only clean environment for calls in the target.
+    (closes: #426290, #462327)
+  * Don't fail if there is nothing to install in a step.
+    (closes: #429400)
+  * Install base-passwd before makedev step. (closes: #466940)
+
+ -- Bastian Blank <waldi@debian.org>  Sat, 23 Feb 2008 19:39:05 +0000
+
+cdebootstrap (0.4.4) unstable; urgency=low
+
+  * Use policy-rc.d instead of diverting start-stop-daemon.
+  * Ask apt not to install recommended packages.
+  * Provide sha256 checksum in apt helper. (closes: #448210)
+
+ -- Bastian Blank <waldi@debian.org>  Sun, 13 Jan 2008 16:52:44 +0000
+
+cdebootstrap (0.4.3) unstable; urgency=low
+
+  * Add debian-archive-keyring to depends.
+  * Fix sarge actions.
+  * Remove apt-utils from install list.
+  * Cleanup config.
+  * Add generic ubuntu config which installs ubuntu-keyring.
+
+ -- Bastian Blank <waldi@debian.org>  Tue, 15 May 2007 15:04:38 +0000
+
+cdebootstrap (0.4.2) unstable; urgency=low
+
+  * Support exclude of packages. (closes: #398845)
+  * Install docs. (closes: #398852)
+  * Ignore missing Release.gpg files in unauthenticated mode.
+    (closes: #330756)
+  * Update documentation. (closes: #398844, #396319, #407318, #416521)
+
+ -- Bastian Blank <waldi@debian.org>  Sun, 13 May 2007 16:30:12 +0000
+
+cdebootstrap (0.4.1) unstable; urgency=low
+
+  * Add support for ubuntu releases.
+  * Drop codename entries from config.
+  * Drop support for woody.
+  * Remove cache on cleanup.
+
+ -- Bastian Blank <waldi@debian.org>  Sat, 12 May 2007 18:05:07 +0000
+
+cdebootstrap (0.4.0) unstable; urgency=low
+
+  * Add support to verify on Release.gpg files.
+  * Fix message level handling.
+
+ -- Bastian Blank <waldi@debian.org>  Fri, 11 May 2007 16:21:45 +0000
+
+cdebootstrap (0.3.19) unstable; urgency=low
+
+  * Really fix location of config files.
+
+ -- Bastian Blank <waldi@debian.org>  Thu, 26 Apr 2007 13:21:29 +0000
+
+cdebootstrap (0.3.18) unstable; urgency=low
+
+  * Fix location of config files.
+
+ -- Bastian Blank <waldi@debian.org>  Thu, 26 Apr 2007 05:11:05 +0000
+
+cdebootstrap (0.3.17) unstable; urgency=low
+
+  * Add cdebootstrap-static package.
+
+ -- Bastian Blank <waldi@debian.org>  Thu, 19 Apr 2007 15:00:32 +0000
+
+cdebootstrap (0.3.16) unstable; urgency=low
+
+  * Add support for lenny.
+  * Build a tar with static binary.
+  * Drop support for external ar.
+  * Write hosts and resolv.conf.
+
+ -- Bastian Blank <waldi@debian.org>  Mon,  9 Apr 2007 15:29:37 +0000
+
+cdebootstrap (0.3.15) unstable; urgency=low
+
+  * debian/control:
+    - Bump libdebian-installer4-dev build dependency.
+    - Remove po-debconf from build depends.
+    - Bump standards version.
+  * debian/copyright: Update FSF address.
+  * src:
+    - Implement --suite-config.
+  * src/frontend/standalone:
+    - Write real sources.list.
+
+ -- Bastian Blank <waldi@debian.org>  Fri, 20 Oct 2006 15:40:47 +0000
+
+cdebootstrap (0.3.14) unstable; urgency=low
+
+  * helper/cdebootstrap-helper-apt:
+    - Support new naming schema.
+  * include, src:
+    - Redo indices support. (closes: #388010)
+
+ -- Bastian Blank <waldi@debian.org>  Sat, 14 Oct 2006 19:55:11 +0000
+
+cdebootstrap (0.3.13) unstable; urgency=low
+
+  * config:
+    - Remove bootable flavour.
+    - Use important priority for standard flavour in sid and etch.
+    - Remove special etch config, it matches the sid one.
+  * helper/cdebootstrap-helper-apt:
+    - Don't consider a gzip compressed file an alternative of an bzip2
+      compressed one.
+  * src:
+    - Support exclude of packages via config.
+
+ -- Bastian Blank <waldi@debian.org>  Wed, 30 Aug 2006 12:19:52 +0000
+
+cdebootstrap (0.3.12) unstable; urgency=low
+
+  * config:
+    - Remove base-config.
+
+ -- Bastian Blank <waldi@debian.org>  Thu, 24 Aug 2006 18:17:54 +0000
+
+cdebootstrap (0.3.11) unstable; urgency=low
+
+  * config:
+    - Build dev for minimal flavour.
+  * Implement --variant compatibility option. (closes: #331554)
+  * Fix generic error message. (closes: #332907)
+
+ -- Bastian Blank <waldi@debian.org>  Sun, 26 Feb 2006 14:12:59 +0100
+
+cdebootstrap (0.3.10) unstable; urgency=low
+
+  * config:
+    - Configure helpers before dpkg. (closes: #350262)
+
+ -- Bastian Blank <waldi@debian.org>  Mon, 30 Jan 2006 19:02:43 +0100
+
+cdebootstrap (0.3.9) unstable; urgency=low
+
+  * helper:
+    - Remove fakeroot usage.
+    - Add makedev-minimal helper.
+  * config:
+    - Remove shadow workaround.
+    - Use makedev-minimal helper for build flavour. (closes: #331498)
+
+ -- Bastian Blank <waldi@debian.org>  Tue, 04 Oct 2005 11:08:09 +0200
+
+cdebootstrap (0.3.8) unstable; urgency=low
+
+  * debian/rules: Fix CFLAGS.
+
+ -- Bastian Blank <waldi@debian.org>  Mon, 05 Sep 2005 16:05:20 +0200
+
+cdebootstrap (0.3.7) unstable; urgency=low
+
+  * Fix etch config.
+
+ -- Bastian Blank <waldi@debian.org>  Sun, 10 Jul 2005 10:57:41 +0200
+
+cdebootstrap (0.3.6) unstable; urgency=low
+
+  * Use apt helper as /var/lib/apt is considered an internal interface.
+  * Overwrite authentication. (closes: #317160)
+
+ -- Bastian Blank <waldi@debian.org>  Thu, 07 Jul 2005 09:15:51 +0200
+
+cdebootstrap (0.3.5) unstable; urgency=low
+
+  * config:
+    - Support etch. (closes: #315154)
+
+ -- Bastian Blank <waldi@debian.org>  Wed, 22 Jun 2005 18:59:48 +0200
+
+cdebootstrap (0.3.4) unstable; urgency=low
+
+  * src/packages.c:
+    - Fix compilation error. (closes: #301029)
+
+ -- Bastian Blank <waldi@debian.org>  Wed, 23 Mar 2005 19:58:54 +0100
+
+cdebootstrap (0.3.3) unstable; urgency=low
+
+  * debian/control:
+    - Remove binutils from dependencies.
+  * debian/rules:
+    - Use internal ar implementation.
+
+ -- Bastian Blank <waldi@debian.org>  Tue, 22 Mar 2005 20:09:46 +0100
+
+cdebootstrap (0.3.2) unstable; urgency=low
+
+  * src:
+    - Remove most occurances of "Doing something important". (closes: #290272)
+
+ -- Bastian Blank <waldi@debian.org>  Fri, 14 Jan 2005 22:37:18 +0100
+
+cdebootstrap (0.3.1) unstable; urgency=low
+
+  * src:
+    - Don't overwrite PATH.
+
+ -- Bastian Blank <waldi@debian.org>  Fri, 07 Jan 2005 21:34:52 +0100
+
+cdebootstrap (0.3.0) unstable; urgency=low
+
+  * config/*/packages:
+    - Remove linux-devfs/any.
+  * config/*/sections:
+    - Remove linux-devfs.
+  * debian/*.templates:
+    - Mark any entry as non-translatable they will be moved to d-i if
+      possible.
+  * helper
+    - Add helper packages.
+
+ -- Bastian Blank <waldi@debian.org>  Wed, 05 Jan 2005 21:20:08 +0100
+
+cdebootstrap (0.2.6) unstable; urgency=low
+
+  * config/sarge/action:
+    - Remove glibc workarounds.
+  * config/sid/packages:
+    - Merge updates from config/sarge/packages.
+
+ -- Bastian Blank <waldi@debian.org>  Fri, 09 Jul 2004 22:28:51 +0200
+
+cdebootstrap (0.2.5) unstable; urgency=low
+
+  * config/sarge/package, config/woody/packages:
+    - Fix entry. (closes: #245811)
+  * Use clean environment for execs. (closes: #159361)
+  * Reorganize logging.
+
+ -- Bastian Blank <waldi@debian.org>  Tue, 11 May 2004 16:49:56 +0200
+
+cdebootstrap (0.2.4) unstable; urgency=low
+
+  * config/sarge.
+    - Add as copy from config/sid.
+  * config/sarge/packages:
+    - Add dhcp3-client, ifupdown, iptables, telnet to network/any.
+    - Add pppconfig, pppoeconf to network/!s390.
+    - Add at, cpio, ed, psmisc, tasksel to standard/any.
+    - Add console-tools, fdutils to standard/!s390.
+    (closes: #244413)
+  * config/sid/action:
+    - Remove glibc workarounds.
+  * config/woody/packages:
+    - Add dhcp-client, ifupdown, iptables, telnet to network/any.
+    - Remove netkit-inetd from network/any.
+    - Add pcmcia-cs to network/i386.
+    - Add pppconfig, pppoeconf to network/!s390.
+    - Add gettext-base to root/any.
+    - Add at, cpio, ed, modconf, psmisc, tasksel to standard/any.
+    - Add console-tools, fdutils to standard/!s390.
+    (closes: #244408)
+  * src/frontend/standalone/message.c:
+    - Always flush output. (closes: #244402)
+  * src/frontend/standalone/main.c:
+    Fix resize of include array. (closes: #241812)
+
+ -- Bastian Blank <waldi@debian.org>  Sat, 24 Apr 2004 19:54:09 +0200
+
+cdebootstrap (0.2.3) unstable; urgency=low
+
+  * config/woody/packages:
+    - Follow config/sid/packages updates.
+  * config/woody/sections:
+    - Follow config/sid/sections updates.
+  * config/*/packages:
+    - Add tcpd, wget to network/any.
+
+ -- Bastian Blank <waldi@debian.org>  Sat, 13 Mar 2004 18:03:20 +0100
+
+cdebootstrap (0.2.2) unstable; urgency=low
+
+  * Fix broken upload. (closes: #231523)
+  * debian/control:
+    - cdebootstrap: Depends against binutils, wget.
+
+ -- Bastian Blank <waldi@debian.org>  Fri, 06 Feb 2004 21:04:19 +0100
+
+cdebootstrap (0.2.1) unstable; urgency=low
+
+  * config/*/packages:
+    - Add apt-utils to base/any.
+    - Remove makedev from base/any.
+    - Add priority-required to required/any.
+  * config/*/sections:
+    - Add required: standard, install.
+    - Rename flavour install to installer.
+  * config/sid/packages:
+    - Remove elilo dependencies from boot/ia64.
+    - Add info, manpages, man-db to documentation/any.
+    - Add tasksel to installer/any.
+    - Add dhcp3-client, ifupdown to network-installer/any.
+    - Add cron to root/any.
+    - Remove modconf from root/any.
+    - Add nano to standard/any.
+  * config/sid/sections:
+    - Add documentation: standard, installer.
+    - Add installer: installer.
+    - Add network-installer: installer.
+  * config/woody/packages:
+    - Remove section linux-devfs/any.
+  * config/woody/sections:
+    - Remove linux-devfs.
+  * debian/control:
+    - Build-Depend against libdebian-installer4-dev (>= 0.19).
+    - cdebootstrap-udeb Provides debootstrap-udeb.
+  * src/frontend/debian-installer:
+    - Fix retriever location.
+    - Use mirror/suite.
+  * src/frontend/standalone:
+    - Fix file:// URIs.
+  * Reorganize progress bar.
+  * Add include option.
+  * Various fixes.
+  * Get the Releases file first if there is no config specified for the
+    current suite/codename.
+
+ -- Bastian Blank <waldi@debian.org>  Fri, 06 Feb 2004 01:31:30 +0100
+
+cdebootstrap (0.2.0) unstable; urgency=low
+
+  * config:
+    - Cleanup config.
+  * config/sid/action:
+    - Add workaround for glibc 2.3.2.ds1-11.
+    - Remove workaround for dpkg bug.
+  * src:
+    - Cleanup.
+  * src/frontend/standalone:
+    - Add manpage.
+    - Support -h.
+
+ -- Bastian Blank <waldi@debian.org>  Wed, 28 Jan 2004 18:33:59 +0100
+
+cdebootstrap (0.1.2) experimental; urgency=low
+
+  * First official release.
+
+ -- Bastian Blank <waldi@debian.org>  Tue, 19 Aug 2003 11:07:23 +0200
+
+cdebootstrap (0.1.1) experimental; urgency=low
+
+  * Release.
+
+ -- Bastian Blank <waldi@debian.org>  Sun, 17 Aug 2003 21:22:19 +0200
+
+cdebootstrap (0.1.0) experimental; urgency=low
+
+  * Initial Release.
+
+ -- Bastian Blank <waldi@debian.org>  Thu, 14 Aug 2003 22:51:01 +0200
+

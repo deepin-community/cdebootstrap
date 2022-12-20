@@ -1,0 +1,6 @@
+Package: cdebootstrap-helper-rc.d
+Version: 1
+Architecture: all
+Maintainer: Bastian Blank <waldi@debian.org>
+Source: cdebootstrap
+Description: Bootstrap helper

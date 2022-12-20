@@ -1,0 +1,2 @@
+#!/bin/sh
+exec cdebootstrap Debian/sid "${ADTTMP}/root" --debug --flavour standard

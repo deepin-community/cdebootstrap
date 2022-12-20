@@ -1,0 +1,38 @@
+Source: cdebootstrap
+Section: admin
+Priority: optional
+Maintainer: Bastian Blank <waldi@debian.org>
+Build-Depends:
+ debhelper (>> 9),
+ dh-autoreconf,
+ autotools-dev,
+ libbz2-dev,
+ libcurl4-gnutls-dev,
+ libdebconfclient0-dev (>= 0.40),
+ libdebian-installer4-dev (>= 0.109~),
+ liblzma-dev,
+ pkg-config,
+ zlib1g-dev
+Standards-Version: 3.9.6
+
+Package: cdebootstrap
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, gpgv, debian-archive-keyring
+Suggests: qemu-user-static
+Description: Bootstrap a Debian system
+ cdebootstrap generates systems from scratch for Debian and derivates.
+ .
+ This is implementation is different from debootstrap.  It features a different
+ package selection.  The package selection is done according to the flavour.
+
+Package: cdebootstrap-static
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, gpgv, curl, debian-archive-keyring
+Suggests: qemu-user-static
+Built-Using: ${misc:Built-Using}
+Description: Bootstrap a Debian system - static binary
+ cdebootstrap generates systems from scratch for Debian and derivates.
+ .
+ This package contains a static binary and a standalone tar.  The standalone
+ tar can be used on non-Debian systems.
+

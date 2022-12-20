@@ -1,0 +1,2 @@
+#!/bin/sh
+exec cdebootstrap Debian/buster "${ADTTMP}/root" --debug --flavour standard

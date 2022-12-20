@@ -1,0 +1,21 @@
+#! /bin/sh
+set -e
+
+case "$1" in
+  purge)
+    rm -rf /var/cache/bootstrap
+    > /etc/apt/sources.list
+    apt-get -o Debug::NoLocking=1 update
+    apt-get -o Debug::NoLocking=1 clean
+  ;;
+
+  remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+  ;;
+
+  *)
+    echo "postrm called with unknown argument \`$1'" >&2
+    exit 1
+
+esac
+
+exit 0

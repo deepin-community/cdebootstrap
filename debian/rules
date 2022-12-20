@@ -1,0 +1,48 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/default.mk
+
+%:
+	dh $@ --parallel --with autoreconf
+
+override_dh_auto_configure:
+	dh_auto_configure --builddir build-deb -- \
+		--with-dpkg-arch=$(DEB_HOST_ARCH) \
+		--with-frontend=standalone
+	dh_auto_configure --builddir build-static -- \
+		--with-dpkg-arch=$(DEB_HOST_ARCH) \
+		--enable-static \
+		--with-configdir=\$${datadir}/cdebootstrap-static \
+		--with-frontend=standalone
+	dh_auto_configure --builddir build-tar -- \
+		--with-dpkg-arch=$(DEB_HOST_ARCH) \
+		--enable-static \
+		--with-configdir=BINARY/cdebootstrap-support \
+		--with-frontend=standalone
+
+override_dh_auto_build:
+	dh_auto_build --builddir build-deb
+	dh_auto_build --builddir build-static
+	dh_auto_build --builddir build-tar
+
+override_dh_auto_install:
+	dh_auto_install --builddir build-deb --destdir debian/cdebootstrap
+
+	dh_auto_install --builddir build-static --destdir debian/cdebootstrap-static
+	mv debian/cdebootstrap-static/usr/bin/cdebootstrap debian/cdebootstrap-static/usr/bin/cdebootstrap-static
+	mv debian/cdebootstrap-static/usr/share/man/man1/cdebootstrap.1 debian/cdebootstrap-static/usr/share/man/man1/cdebootstrap-static.1
+
+	dh_auto_install --builddir build-tar --destdir debian/tmp
+	strip --remove-section=.comment --remove-section=.note debian/tmp/usr/bin/cdebootstrap
+	tar -C debian/tmp/usr/bin --mtime=@$(SOURCE_DATE_EPOCH) -cf debian/tmp/cdebootstrap_$(DEB_VERSION)_$(DEB_HOST_ARCH).tar .
+	mkdir -p debian/cdebootstrap-static/usr/lib/cdebootstrap
+	cp debian/tmp/cdebootstrap_$(DEB_VERSION)_$(DEB_HOST_ARCH).tar debian/cdebootstrap-static/usr/lib/cdebootstrap
+
+	( echo -n "misc:Built-Using="; dpkg-query -f='$${source:Package} (= $${source:Version}), ' -W libc6-dev libdebian-installer4-dev libdebconfclient0-dev libbz2-dev liblzma-dev zlib1g-dev; echo ) >> debian/cdebootstrap-static.substvars
+
+override_dh_auto_clean:
+	-rm -rf build-*

@@ -1,0 +1,155 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use IO::File;
+use IO::Handle;
+
+my $stdin = new_from_fd IO::Handle fileno (STDIN), "r" || die "can't open stdin";
+my $stdout = new_from_fd IO::Handle fileno (STDOUT), "w" || die "can't open stdout";
+$stdout->autoflush;
+my $stderr = new_from_fd IO::Handle fileno (STDERR), "w" || die "can't open stderr";
+$stderr->autoflush;
+my $status = new_from_fd IO::Handle 4, "w+" or die "can't open status";
+$status->autoflush;
+
+$stdout->print ("100 Capabilities
+Version: 1.0
+Single-Instance: true
+Local-Only: true
+
+");
+
+sub check_file
+{
+  my ($uri, $file) = @_;
+  my $realfile = "/var/cache/bootstrap/$file";
+
+  if (my @stat = stat $realfile)
+  {
+    my $output = "201 URI Done
+URI: $uri
+Filename: $realfile
+Size: $stat[7]
+";
+
+    my $sha256sum = sum ("sha256sum", $realfile);
+    $output .= "SHA256-Hash: $sha256sum\n" if $sha256sum;
+
+    $output .= "\n";
+
+    $stdout->print ($output);
+
+    return 1;
+  }
+  elsif ($realfile =~ /^(.*)\.(bz2|gz)$/)
+  {
+    my $altfile = "$1" if stat "$1";
+    if ($altfile)
+    {
+      $stdout->print ("201 URI Done
+URI: $uri
+Filename: $realfile
+Alt-filename: $altfile
+
+");
+      return 1;
+    }
+  }
+}
+
+sub download_file
+{
+  my ($uri, $filename) = @_;
+
+  if ($uri =~ m|^bootstrap:/(pool/.*)$|)
+  {
+    my $uri_path = $1;
+    my $uri_file = (split(/\//, $uri_path))[-1];
+    my $package = (split(/_/, $uri_file))[0];
+    $status->print("download: $package: $uri_path $filename\n");
+
+    my $result = $status->getline;
+    chomp $result;
+    if ($result eq 'ok')
+    {
+      my @stat = stat $filename;
+      my $sha256sum = sum ("sha256sum", $filename);
+      $stdout->print (<<"EOT");
+201 URI Done
+URI: $uri
+Filename: $filename
+Size: $stat[7]
+SHA256-Hash: $sha256sum
+
+EOT
+
+      return 1;
+    }
+  }
+}
+
+sub sum
+{
+  my ($tool, $file) = @_;
+
+  my $fh = new IO::File "$tool $file |" || return;
+  my ($sum) = split /\s+/, <$fh>;
+  return $sum;
+}
+
+sub read_msg
+{
+  my %ret;
+
+  $_ = $stdin->getline;
+  exit 0 unless $_;
+
+  chomp;
+  return unless $_;
+
+  die "get broken code" unless /^(\d{3})\s+/;
+
+  $ret{code} = $1;
+
+  while (1)
+  {
+    $_ = $stdin->getline;
+    chomp;
+    last unless $_;
+
+    die "get broken header in \"$_\"" unless /^(\S+):\s*(.+)$/;
+
+    $ret{$1} = $2;
+  }
+
+  return %ret;
+}
+
+while (1)
+{
+  my %msg = read_msg ();
+
+  if (defined $msg{code} and $msg{code} == 600)
+  {
+    my $uri = $msg{URI};
+    $uri =~ m#:([^:]+)$#;
+    my $file = $1;
+    $file =~ s#/#_#g;
+
+    next if check_file ($uri, $file);
+
+    $uri =~ m#/([^/]+)$#;
+    $file = $1;
+
+    next if check_file ($uri, $file);
+
+    next if download_file ($msg{URI}, $msg{Filename});
+
+    $stdout->print ("400 URI Failure
+URI: $uri
+
+");
+  }
+}
+

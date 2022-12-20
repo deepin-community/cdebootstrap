@@ -1,0 +1,2 @@
+#!/bin/sh
+exec cdebootstrap Debian/bullseye "${ADTTMP}/root" --debug --flavour standard

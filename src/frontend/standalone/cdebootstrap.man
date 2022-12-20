@@ -1,0 +1,88 @@
+.TH CDEBOOTSTRAP "1" "" "cdebootstrap" "User Commands"
+.SH NAME
+cdebootstrap \- Bootstrap a Debian system
+.SH SYNOPSIS
+.B cdebootstrap
+[\fIOPTION\fR]... [\fIORIGIN/\fR]\fICODENAME TARGET \fR[\fIMIRROR\fR]
+.SH DESCRIPTION
+\fBcdebootstrap\fR builds a basic Debian system of \fICODENAME\fR
+(e.g. jessie, stretch, sid) from \fIORIGIN\fR (e.g Debian, Ubuntu)
+into \fITARGET\fR using the source specified in \fIMIRROR\fR.
+It supports http://, ftp://, file:// and ssh:// URL and defaults to http://ftp.debian.org/debian.
+The ssh:// scheme uses \fBcat\fR on the remote host to access the files.
+You have to setup a master connection and configure ssh to use it or use a
+key for authentication. No user interaction is possible.
+The complete log is saved as \fI/var/log/bootstrap.log\fR in the new system.
+.PP
+Mandatory arguments to long options are mandatory for short options too.
+.TP
+\fB\-\-allow\-unauthenticated\fR
+Ignore if packages can't be authenticated.
+This ignores the unavailability of Release.gpg, missing keyrings, broken signatures and missing gpgv executable.
+.TP
+\fB\-a\fR, \fB\-\-arch\fR=\fIARCH\fR
+Set the target architecture.
+.TP
+\fB\-c\fR, \fB\-\-configdir\fR=\fICONFIGDIR\fR
+Set the config directory.
+.TP
+\fB\-\-debug\fR
+Enable debug output.
+.TP
+\fB\-d\fR, \fB\-\-download\-only\fR
+Download packages, but don't perform installation.
+.TP
+\fB\-\-exclude\fR=\fIA,B,C\fR
+Drop packages from the installation list.
+This only works if the package is pulled in explicitely, either via priority or explicit definition in the config.
+It won't exclude packages which are pulled in via dependencies.
+.TP
+\fB\-\-foreign\fR
+Enable support for non-native arch (needs qemu-user-static).
+.TP
+\fB\-f\fR, \fB\-\-flavour\fR=\fIFLAVOUR\fR
+Select the flavour to use (see
+.SM
+.B FLAVOURS
+below).
+.TP
+.TP
+\fB\-k\fR, \fB\-\-keyring\fR=\fIKEYRING\fR
+Use given keyring.
+Relative filename are looked up in /usr/local/share/keyrings, /usr/share/keyrings and \fICONFIGDIR\fR.
+.TP
+\fB\-H\fR, \fB\-\-helperdir\fR=\fIDIR\fR
+Set the helper directory.
+.TP
+\fB\-\-include\fR=\fIA,B,C\fR
+Install extra packages.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Be quiet.
+Only warnings and errors are shown.
+.TP
+\fB\-\-suite-config\fR
+.TP
+\fB\-v\fR, \fB\-\-verbose\fR
+Be verbose.
+All command output is shown.
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+Display this help and exit.
+.TP
+\fB\-\-version\fR
+Output version information and exit.
+.SH FLAVOURS
+Flavours available with default configuration:
+.TP
+\fBbuild\fR
+Installs essential, apt and build-essential.
+Suitable for sbuild and pbuilder usage.
+All rc.d operations are disabled by a policy-rc.d script (cdebootstrap-helper-rc.d package).
+.TP
+\fBminimal\fR
+Installs essential and apt.
+All rc.d operations are disabled by a policy-rc.d script (cdebootstrap-helper-rc.d package).
+.TP
+\fBstandard\fR
+Installs required and important priority packages.  This is the default flavour.

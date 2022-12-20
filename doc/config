@@ -1,0 +1,71 @@
+Suite configuration
+===================
+
+The suite configuration is split up into three files,
+- "action",
+- "packages" and
+- "sections".
+Each of the files includes several RFC822-formated entries.
+
+Currently the parser ignores unknown fields, but the Comment field should be
+used for comments.
+
+"action" file
+-------------
+
+Each entry is composed of the following fields:
+* Action
+  A string which defines the action.
+* Flags
+  Some actions defines flags to change its behaviour.
+* Flavour
+  The action is only used in the specified flavours.
+* What:
+  The target.
+
+Valid actions:
+* apt-install
+  Install a package via apt.
+* dpkg-configure
+  Configure pending packages.
+  The action uses the following flags:
+  - force
+    Make dpkg ignore any error.
+* dpkg-install
+  dpkg-unpack
+  Install/unpack a package with dependencies via dpkg.
+  The action uses the following flags:
+  - force
+    Make dpkg ignore any error.
+  - only
+    Don't install/unpack dependencies.
+* dpkg-unpack
+* extract
+  Extract any essential package.
+* helper-install
+  Install helper package.
+* helper-remove
+  Remove helper package.
+* mount
+  Mount /proc in the target chroot, it is umounted automaticaly.
+
+"packages" file
+---------------
+
+Each entry is composed of the following fields:
+* Section
+  This is a cross-reference to a section specification in the "sections" file.
+* Arch
+  The debian architecture or "any" where this entry takes effect.
+* Packages
+  The packages to install.
+
+"sections" file
+---------------
+
+Each entry is composed of the following fields:
+* Section
+  The name of the section.
+* Flavour
+  The flavour (see cdebootstrap(1)) where this section is applied.
+

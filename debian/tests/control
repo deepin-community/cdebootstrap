@@ -1,0 +1,3 @@
+Tests: sid-build, sid-minimal, sid-standard, bullseye-standard, buster-standard
+Depends: cdebootstrap
+Restrictions: needs-root
